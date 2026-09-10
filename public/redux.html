@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Redux counter demo</title>
+    </head>
+    <body>
+        <h1 id="counter-value">0</h1>
+        <button id="increase">Increase</button>
+        <button id="decrease">Decrease</button>
+        <button id="reset">Reset</button>
+        <button id="remove">Remove listener</button>
+
+        <script src="./redux.js"></script>
+        <script>
+            const initState = 10;
+
+            function reducer(state = initState, action) {
+                switch (action.type) {
+                    case "increase":
+                        return state + action.payload;
+                    case "decrease":
+                        return state - action.payload;
+                    case "reset":
+                        return initState;
+                    default:
+                        return state;
+                }
+            }
+            const store = Redux.createStore(reducer, initState);
+
+            const counterValue = document.querySelector("#counter-value");
+            const increase = document.querySelector("#increase");
+            const decrease = document.querySelector("#decrease");
+            const reset = document.querySelector("#reset");
+            const remove = document.querySelector("#remove");
+
+            function render() {
+                counterValue.textContent = store.getState();
+            }
+            render();
+
+            const unsubscribe = store.subscribe(render);
+
+            increase.addEventListener("click", () => {
+                store.dispatch({
+                    type: "increase",
+                    payload: 2,
+                });
+            });
+
+            decrease.addEventListener("click", () => {
+                store.dispatch({
+                    type: "decrease",
+                    payload: 2,
+                });
+            });
+
+            reset.addEventListener("click", () => {
+                store.dispatch({
+                    type: "reset",
+                });
+            });
+
+            remove.addEventListener("click", () => {
+                unsubscribe();
+                console.log("Listener removed");
+            });
+        </script>
+    </body>
+</html>
