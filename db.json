@@ -1,16 +1,12 @@
 {
   "tasks": [
     {
-      "title": "Nấu cơm",
-      "id": "1"
+      "title": "T1",
+      "id": "xqoqKIm0olM"
     },
     {
-      "title": "Quét nhà",
-      "id": "2"
-    },
-    {
-      "title": "Rửa chén",
-      "id": "3"
+      "title": "T0",
+      "id": "JpDSRstTmxM"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

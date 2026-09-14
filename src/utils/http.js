@@ -32,7 +32,7 @@ const patch = async (path, data, config) => {
 };
 
 const del = async (path, config) => {
-    return await _send("del", path, config);
+    return await _send("delete", path, null, config);
 };
 
 const http = { get, post, put, patch, del };

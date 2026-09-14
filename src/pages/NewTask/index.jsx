@@ -48,6 +48,7 @@ export default function NewTask() {
                     label={"Title: "}
                     name={"title"}
                     required
+                    autoFocus
                     disabled={isSubmitting}
                 />
                 <button type="submit" disabled={isSubmitting}>

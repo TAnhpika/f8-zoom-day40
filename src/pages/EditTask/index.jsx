@@ -66,7 +66,7 @@ export default function EditTask() {
 
     return (
         <div>
-            <h1>EditTask: {id}</h1>
+            <h2 >EditTask with id: {id}</h2>
 
             <TaskForm
                 initValues={{ title: task.title }}
@@ -76,6 +76,7 @@ export default function EditTask() {
                     label={"Title: "}
                     name={"title"}
                     required
+                    autoFocus
                     disabled={isSubmitting}
                 />
                 <button type="submit" disabled={isSubmitting}>

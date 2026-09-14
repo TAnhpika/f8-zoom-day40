@@ -25,7 +25,11 @@ const reducer = (state = initState, action) => {
         case UPDATE_TASK:
             return { ...state, tasks: action.payload, loading: false };
         case DELETE_TASK:
-            return { ...state, tasks: action.payload, loading: false };
+            return {
+                ...state,
+                tasks: state.tasks.filter((task) => task.id !== action.payload),
+                loading: false,
+            };
         case SET_LOADING:
             return { ...state, loading: action.payload };
         default:

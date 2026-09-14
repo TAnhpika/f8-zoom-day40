@@ -37,10 +37,19 @@ export default function TaskList() {
         })();
     }, [dispatch]);
 
-    const handleDelete = () => {
-        dispatch({
-            type: "task/del",
-        });
+    const handleDelete = async (id) => {
+        if (!confirm("Delete this task?")) return;
+        
+        try {
+            await http.del(`/tasks/${id}`);
+
+            dispatch({
+                type: "task/delete-task",
+                payload: id,
+            });
+        } catch (error) {
+            console.error(error.message);
+        }
     };
 
     return (
@@ -51,7 +60,7 @@ export default function TaskList() {
             <h1>Task list:</h1>
             {loading ? (
                 <div>Loading...</div>
-            ) : (tasks?.length ? (
+            ) : tasks?.length ? (
                 <ul>
                     {tasks.map((task) => (
                         <li key={task.id}>
@@ -63,11 +72,15 @@ export default function TaskList() {
                             >
                                 Edit
                             </button>
-                            <button onClick={handleDelete}>Delete</button>
+                            <button onClick={() => handleDelete(task.id)}>
+                                Delete
+                            </button>
                         </li>
                     ))}
                 </ul>
-            ) : <div>Chưa có task nào</div>)}
+            ) : (
+                <div>Chưa có task nào</div>
+            )}
         </div>
     );
 }
