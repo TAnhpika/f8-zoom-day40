@@ -9,8 +9,9 @@ export default function TaskList() {
     const dispatch = useDispatch();
     const tasks = useSelector((state) => state.task.tasks);
     const loading = useSelector((state) => state.task.loading);
-
     const navigate = useNavigate();
+
+    console.log("TaskList re-render");
 
     useEffect(() => {
         (async () => {
@@ -50,7 +51,7 @@ export default function TaskList() {
             <h1>Task list:</h1>
             {loading ? (
                 <div>Loading...</div>
-            ) : (
+            ) : (tasks?.length ? (
                 <ul>
                     {tasks.map((task) => (
                         <li key={task.id}>
@@ -66,7 +67,7 @@ export default function TaskList() {
                         </li>
                     ))}
                 </ul>
-            )}
+            ) : <div>Chưa có task nào</div>)}
         </div>
     );
 }
