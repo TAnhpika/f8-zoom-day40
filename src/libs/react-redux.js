@@ -1,10 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
-
-const Context = createContext();
-
-const Provider = ({ store, children }) => {
-    return <Context value={store}>{children}</Context>;
-};
+import Context from "@/contexts/Context";
+import { useContext, useEffect, useState } from "react";
 
 function useStore() {
     const store = useContext(Context);
@@ -35,4 +30,4 @@ function useDispatch() {
     return store.dispatch;
 }
 
-export { Context, Provider, useStore, useSelector, useDispatch };
+export { useStore, useSelector, useDispatch };
