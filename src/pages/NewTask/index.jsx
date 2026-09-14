@@ -54,9 +54,8 @@ export default function NewTask() {
                     {isSubmitting ? "Adding..." : "Add task"}
                 </button>
                 <button
-                    onClick={() => {
-                        navigate(-1);
-                    }}
+                    type="button"
+                    onClick={() => navigate(-1)}
                     disabled={isSubmitting}
                 >
                     Cancel
