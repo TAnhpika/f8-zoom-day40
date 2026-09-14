@@ -2,35 +2,74 @@
 
 import Context from "@/contexts/Context";
 import useFormValues from "@/hooks/useFormValue";
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
+import { useNavigate } from "react-router";
 
-const TaskForm = forwardRef(({ children, initValues, onSubmit }, ref) => {
-    const { formValues, setFieldValue, handleChange } =
-        useFormValues(initValues);
+const TaskForm = forwardRef(
+    ({ children, initValues, onSubmit, submitText }, ref) => {
+        const { formValues, setFieldValue, handleChange } =
+            useFormValues(initValues);
+        const navigate = useNavigate();
+        const [isSubmitting, setIsSubmitting] = useState(false);
 
-    useImperativeHandle(
-        ref,
-        () => ({
-            setFieldValue,
-        }),
-        [setFieldValue],
-    );
+        useImperativeHandle(
+            ref,
+            () => ({
+                setFieldValue,
+            }),
+            [setFieldValue],
+        );
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSubmit(formValues);
-    };
+        const handleSubmit = async (e) => {
+            e.preventDefault();
 
-    const values = {
-        formValues,
-        handleChange,
-    };
+            const title = formValues.title.trim();
 
-    return (
-        <Context value={values}>
-            <form onSubmit={handleSubmit}>{children}</form>
-        </Context>
-    );
-});
+            if (!title) {
+                alert("Please enter task title");
+                return;
+            }
+
+            setIsSubmitting(true);
+
+            try {
+                await onSubmit({
+                    ...formValues,
+                    title,
+                });
+                navigate(-1);
+            } catch (error) {
+                console.error(error.message);
+            } finally {
+                setIsSubmitting(false);
+            }
+        };
+
+        const values = {
+            formValues,
+            handleChange,
+            isSubmitting,
+        };
+
+        return (
+            <Context value={values}>
+                <form onSubmit={handleSubmit}>
+                    {children}
+                    <button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Submit..." : submitText}
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={() => navigate(-1)}
+                        disabled={isSubmitting}
+                    >
+                        Cancel
+                    </button>
+                </form>
+            </Context>
+        );
+    },
+);
 
 export default TaskForm;
